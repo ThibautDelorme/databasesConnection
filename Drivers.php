@@ -50,5 +50,8 @@ class Drivers {
         if (strpos($this->_selectedDriver,'%') !== false) {
             $this->log->error("you need more option in your driver. see your call to buildDrivers($host, $dbname, $port, $login, $pwd ,$socket)");
         }
+        else {
+            $this->log->info("Drivers are selected !");
+        }
     }
 } 
