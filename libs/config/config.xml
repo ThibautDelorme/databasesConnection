@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <date_format>d-m-Y H:i:s</date_format> <!-- PHP standard -->
+    <level>0</level> <!-- 0: debug, 1: info, 2: warn, 3: error, 4: fatal  -->
+    <template>/date/ :::: /level/ :::: /tag/ :::: </template>
+    <folderpath>../../../Log</folderpath>
+    <filename>log.log</filename>
+</config>
