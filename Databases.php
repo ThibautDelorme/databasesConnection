@@ -70,15 +70,47 @@ class Databases {
         foreach( $keys as $key) {
             $query .= $key.", ";
         }
-        $query .= ") VALUE (";
+        $query .= ") VALUE (?";
+        $maxlines = count($keys);
+        for($i = 1; $i < $maxlines-1;$i++) {
+            $query .= ",?";
+        }
+        $query.=")";
+        $statement = $this->connection->prepare($query);
+        return $statement->execute($values);
     }
 
-    public function update() {
-
+    public function update($table, $columns=array(), $newValues=array(), $keys=array(),$values=array(), $mode=array()) {
+        $query = "UPDATE ".$table."(";
+        for($i=0;$i<count($columns);$i++) {
+            $query .= $columns[$i] . "= " . $newValues[$i] . ",";
+        }
+        substr($query,0,strlen($query)-1);
+        $query.=") WHERE ";
+        $maxlines = count($keys);
+        $currentline = 0;
+        foreach ($keys as $key) {
+            if($currentline < ($maxlines-1))
+                $query .= $key." = ? ".$mode[$currentline]." ";
+            else
+                $query .= $key." = ?";
+        }
+        $statement = $this->connection->prepare($query);
+        return $statement->execute($values);
     }
 
-    public function delete() {
-
+    public function delete($table,$keys=array(),$values=array(),$mode=array()) {
+        $query = "DELETE FROM ".$table." WHERE ";
+        $maxlines = count($keys);
+        $currentline = 0;
+        foreach ($keys as $key) {
+            if($currentline < ($maxlines-1))
+                $query .= $key." = ? ".$mode[$currentline]." ";
+            else
+                $query .= $key." = ?";
+        }
+        $statement = $this->connection->prepare($query);
+        return $statement->execute($values);
     }
 
 } 
